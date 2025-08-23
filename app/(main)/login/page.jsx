@@ -24,7 +24,7 @@ export default function LoginPage() {
       toast.success("Login Success")
       router.push("/")
     } else {
-      // alert(res.error)
+      alert(res.error)
       setError(res.error)
     }
   }

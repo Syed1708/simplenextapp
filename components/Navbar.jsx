@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useSession, signOut } from "next-auth/react"
-import Loading from "@/app/loading"
+import Loading from "@/app/(main)/loading"
+
 
 export default function Navbar() {
   const { data: session, status } = useSession()
@@ -34,6 +35,7 @@ export default function Navbar() {
         {session && (
           <>
             <span className="font-medium">Hello, {session.user.name}</span>
+            <Link href="/dashboard"><Button>Dashboard</Button></Link>
             <Button onClick={() => signOut()} variant="destructive">
               Logout
             </Button>
