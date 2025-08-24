@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { createProduct, getAllProducts } from "@/queries/product.queries"
+import { createProduct, getAllProducts } from "@/queries/product"
 
 export async function POST(req) {
   try {
