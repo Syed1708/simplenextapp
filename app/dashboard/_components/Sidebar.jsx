@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, LayoutDashboard, Package } from "lucide-react"
+import { Menu, X, LayoutDashboard, Home, Package } from "lucide-react"
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
@@ -50,6 +50,14 @@ export default function Sidebar() {
             >
               <Package className="h-5 w-5" />
               Manage Products
+            </Link>
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
+              onClick={() => setOpen(false)}
+            >
+              <Home className="h-5 w-5" />
+              Back Home
             </Link>
           </nav>
         </div>

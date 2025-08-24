@@ -13,9 +13,6 @@ export default function Topbar() {
       <h2 className="text-lg font-semibold text-center">
         <Link href="/dashboard">Dashboard</Link>
       </h2>
-      <h2 className="text-lg font-semibold text-center">
-        <Link href="/">Home</Link>
-      </h2>
 
       {/* User info */}
       <div className="flex items-center gap-4">

@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <header className="flex justify-between items-center p-4 shadow bg-white">
       <Link href="/" className="text-2xl font-bold text-blue-600">
-        ProductApp
+        BDShop
       </Link>
 
       <nav className="flex gap-4 items-center">
@@ -27,7 +27,7 @@ export default function Navbar() {
 
         {!session && (
           <>
-            <Link href="/login"><Button>Login</Button></Link>
+            <Link href="/login"><Button >Login</Button></Link>
             <Link href="/register"><Button>Register</Button></Link>
           </>
         )}
