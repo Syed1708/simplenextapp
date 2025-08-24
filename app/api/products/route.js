@@ -1,5 +1,6 @@
+import { createProduct, getAllProducts } from "@/queries/product-queries"
 import { NextResponse } from "next/server"
-import { createProduct, getAllProducts } from "@/queries/product.queries"
+
 
 export async function POST(req) {
   try {

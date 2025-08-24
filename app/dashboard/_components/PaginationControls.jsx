@@ -9,7 +9,7 @@ export default function PaginationControls({ currentPage, totalPages }) {
   const changePage = (page) => {
     const query = new URLSearchParams(params);
     query.set("page", page);
-    router.push(`/products?${query.toString()}`);
+    router.push(`/dashboard/products?${query.toString()}`);
   };
 
   return (

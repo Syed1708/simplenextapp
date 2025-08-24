@@ -91,6 +91,8 @@ export async function getProducts({
   };
 }
 
+
+
 export async function deleteProductAction(formData) {
   const id = formData.get("id");
   await dbConnect();
