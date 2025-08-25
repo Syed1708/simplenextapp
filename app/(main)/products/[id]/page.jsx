@@ -1,23 +1,24 @@
-import Image from "next/image"
-import { notFound } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Product } from "@/models/Product"
-import { dbConnect } from "@/services/dbConnect"
-import Link from "next/link"
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Product } from "@/models/Product";
+import { dbConnect } from "@/services/dbConnect";
+import Link from "next/link";
 
 export default async function ProductDetailsPage({ params }) {
-  await dbConnect()
-  const product = await Product.findById(params.id).lean()
+  await dbConnect();
+  const { id } = await params;
+  const product = await Product.findById(id).lean();
 
-  if (!product) return notFound()
+  if (!product) return notFound();
 
   const related = await Product.find({
     category: product.category,
     _id: { $ne: product._id },
   })
     .limit(4)
-    .lean()
+    .lean();
 
   return (
     <div className=" mx-auto p-6">
@@ -28,6 +29,7 @@ export default async function ProductDetailsPage({ params }) {
             src={product.large_image}
             alt={product.name}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
           />
         </div>
@@ -76,6 +78,7 @@ export default async function ProductDetailsPage({ params }) {
                         src={item.thumbnail_image}
                         alt={item.name}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover"
                       />
                     </div>
@@ -92,9 +95,6 @@ export default async function ProductDetailsPage({ params }) {
           </div>
         </div>
       )}
-
-
-      
     </div>
-  )
+  );
 }

@@ -1,10 +1,5 @@
 import { createProduct, getAllProducts } from "@/queries/product-queries"
 import { NextResponse } from "next/server"
-<<<<<<< HEAD
-
-=======
-import { createProduct, getAllProducts } from "@/queries/product"
->>>>>>> cac2fc87ebca3f3b2a51cecf9d4dbc67bc2e7d36
 
 export async function POST(req) {
   try {

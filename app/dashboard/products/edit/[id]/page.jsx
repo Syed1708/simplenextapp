@@ -3,7 +3,7 @@ import { updateProductAction } from "@/app/actions/product-actions"
 import { getProductById } from "@/queries/product-queries"
 
 export default async function EditProductPage({ params }) {
-  const id = params.id
+  const {id} = await params
   const product = await getProductById(id)
 
   if (!product) return <p>Product not found.</p>
