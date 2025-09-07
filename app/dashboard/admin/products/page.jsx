@@ -35,7 +35,7 @@ export default async function DashboardProductsPage({ searchParams }) {
       <ToastContainer/>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Manage Products</h1>
-        <Link href="/dashboard/products/create">
+        <Link href="/dashboard/admin/products/create">
           <Button>Create Product</Button>
         </Link>
       </div>
@@ -56,7 +56,7 @@ export default async function DashboardProductsPage({ searchParams }) {
                 <td className="p-3 text-right">
                   <div className="flex justify-end gap-2">
                     <Button size="sm" variant="outline">
-                      <Link href={`/dashboard/products/edit/${p._id}`}>Edit</Link>
+                      <Link href={`/dashboard/admin/products/edit/${p._id}`}>Edit</Link>
                     </Button>
                     <DeleteButton productId={p._id} />
                   </div>

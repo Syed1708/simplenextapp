@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 export default function SocialLogin() {
   const router = useRouter();
-  const session = useSession();
+  const { data: session, status } = useSession();
 
   // const handleLogin = async (provider) => {
   //   const result = await signIn(provider, {
@@ -32,15 +32,28 @@ export default function SocialLogin() {
 
   const handleLogin = (provider) => {
     signIn(provider);
+    // signIn(provider, { callbackUrl: "/" }); 
+    // await signIn(provider, { redirect: false }); 
   };
 
   useEffect(() => {
-    if (session?.data?.user && session?.data?.user?.provider == "google") {
-      //  console.log(session);
-      router.push("/");
-      toast.success("Login Success with google");
+    if (status === "authenticated" && session?.user) {
+      const { role, provider } = session.user;
+
+      if (role === "admin") {
+        // router.push("/dashboard/admin");
+        toast.success(`Login success with ${provider} (Admin)`);
+          setTimeout(() => router.push("/dashboard/admin"), 500);
+      } else if (role === "user") {
+        // router.push("/dashboard");
+        toast.success(`Login success with ${provider}`);
+          setTimeout(() => router.push("/dashboard"), 500);
+      } else {
+        toast.error("Unauthorized role");
+        router.push("/unauthorized");
+      }
     }
-  }, [session?.data?.user]);
+  }, [status, session, router]);
 
   return (
     <div className="flex flex-col gap-3 w-full">

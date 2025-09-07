@@ -10,12 +10,15 @@ export default function Navbar() {
   // const { data: session, status } = useSession()
     const { data: session, status } = useSession();
 
-  console.log(session)
+  // console.log(session)
 
    // Show loader while session is loading
   if (status === "loading") {
     return <Loading/>
   }
+
+  const isRoleUser = session?.user?.role == "user"
+  const isRoleAdmin = session?.user?.role == "admin"
 
   return (
     <header className="flex justify-between items-center p-4 shadow bg-white">
@@ -38,7 +41,18 @@ export default function Navbar() {
         {session && (
           <>
             <span className="font-medium">Hello, {session.user.name}</span>
-            <Link href="/dashboard"><Button>Dashboard</Button></Link>
+            {
+              isRoleAdmin && (
+
+                <Link href="/dashboard/admin"><Button>Dashboard</Button></Link>
+              )
+            }
+            {
+              isRoleUser && (
+                <Link href="/dashboard"><Button>Dashboard</Button></Link>
+
+              )
+            }
             <Button onClick={() => signOut()} variant="destructive">
               Logout
             </Button>

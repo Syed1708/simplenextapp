@@ -3,8 +3,8 @@
 import { useActionState, startTransition } from "react"
 import { Button } from "@/components/ui/button"
 import { addProductAction } from "@/app/actions/product-actions"
-import Loading from "../../loading"
 import { useState } from "react"
+import Loading from "@/app/dashboard/loading"
 
 export function Sbutton({ formData }) {
   const [state, action, pending] = useActionState(addProductAction, false)

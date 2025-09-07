@@ -24,10 +24,10 @@ export async function addProductAction(formData) {
     await createProduct({ name, description, price, category, thumbnail_image, large_image });
 
 
-    revalidatePath("/products");
-    revalidatePath("/dashboard/products");
+    revalidatePath("/admin/products");
+    revalidatePath("/dashboard/admin/products");
 
-    redirect("/dashboard/products?success=1");
+    redirect("/dashboard/admin/products?success=1");
     
  
 }
@@ -98,8 +98,8 @@ export async function deleteProductAction(formData) {
   await dbConnect();
   await Product.findByIdAndDelete(id);
 
-  revalidatePath("/products");
-  revalidatePath("/dashboard/products");
+  revalidatePath("/admin/products");
+  revalidatePath("/dashboard/admin/products");
 
       // Redirect back to dashboard
     // redirect("/dashboard/products?deleted=1")

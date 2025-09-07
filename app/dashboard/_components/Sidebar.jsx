@@ -4,9 +4,15 @@ import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X, LayoutDashboard, Home, Package } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
+  const { data: session, status } = useSession();
+  const isRoleUser = session?.user?.role == "user"
+  const isRoleAdmin = session?.user?.role == "admin"
+
+  if (status === "loading") return <p>Loading...</p>;
 
   return (
     <>
@@ -34,7 +40,10 @@ export default function Sidebar() {
 
           {/* Navigation */}
           <nav className="flex flex-col gap-4">
-            <Link
+            {
+              isRoleAdmin && (
+                <>
+              <Link
               href="/dashboard/admin"
               className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
               onClick={() => setOpen(false)}
@@ -58,7 +67,34 @@ export default function Sidebar() {
             >
               <Home className="h-5 w-5" />
               Back Home
+            </Link>              
+                </>
+              )
+            }
+
+            {
+              isRoleUser && (
+                <>
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
+              onClick={() => setOpen(false)}
+            >
+              <LayoutDashboard className="h-5 w-5" />
+              Overview
             </Link>
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
+              onClick={() => setOpen(false)}
+            >
+              <Home className="h-5 w-5" />
+              Back Home
+            </Link>                
+                </>
+              )
+            }
+
           </nav>
         </div>
       </aside>
