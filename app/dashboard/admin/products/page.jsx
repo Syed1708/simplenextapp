@@ -3,11 +3,11 @@ import {
   getProducts,
 } from "@/app/actions/product-actions";
 import { Button } from "@/components/ui/button";
-import PaginationControls from "../_components/PaginationControls";
 import Link from "next/link";
 import ProductsToast from "./_components/ProductsToast ";
 import { ToastContainer } from "react-toastify";
 import DeleteButton from "./_components/DeleteButton";
+import PaginationControls from "../../_components/PaginationControls";
 
 export default async function DashboardProductsPage({ searchParams }) {
   const params = await searchParams;

@@ -7,7 +7,10 @@ import Loading from "@/app/(main)/loading"
 
 
 export default function Navbar() {
-  const { data: session, status } = useSession()
+  // const { data: session, status } = useSession()
+    const { data: session, status } = useSession();
+
+  console.log(session)
 
    // Show loader while session is loading
   if (status === "loading") {

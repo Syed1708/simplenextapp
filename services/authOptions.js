@@ -1,15 +1,15 @@
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import { loginUser } from "@/app/actions/auth/loginUser";
 import { User } from "@/models/User";
 import { dbConnect } from "./dbConnect";
 export const authOptions = {
   providers: [
     // 🔹 Google Login
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    // }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
 
     // 🔹 Credentials Login
     CredentialsProvider({
@@ -19,60 +19,68 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        await dbConnect();
+        // console.log("credential", credentials);
+        const user = await loginUser(credentials);
+        // console.log("user info",user);
 
-        // console.log("credential",credentials);
-        if (!credentials.email || !credentials.password) {
-          throw new Error("Email and password are required");
+        if (user) {
+          return user;
+        } else {
+          return null;
         }
-        const user = await User.findOne({ email: credentials.email });
-        // console.log("user", user);
-            
-        if (!user) throw new Error("No user found");
-        if (!user.password) throw new Error("User registered with Google");
-
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-        if (!isValid) throw new Error("Invalid credentials");
-
-        return { id: user._id, name: user.name, email: user.email };
       },
     }),
   ],
   callbacks: {
-    // async signIn({ user, account }) {
-    //   await dbConnect();
+    async signIn({ user, account }) {
+      await dbConnect();
+      console.log("user and aaaaaaaaaac", { user, account });
 
-    //   // If login with Google, create user if not exists
-    //   if (account.provider === "google") {
-    //     const existingUser = await User.findOne({ email: user.email });
-    //     if (!existingUser) {
-    //       await User.create({
-    //         name: user.name,
-    //         email: user.email,
-    //         provider: "google",
-    //       });
-    //     }
-    //   }
+      // If login with Google, create user if not exists
+      // if (account.provider === "google") {
+      if (account) {
+        let dbUser = await User.findOne({ email: user.email });
+        console.log("exxisskking user", dbUser);
 
-    //   return true;
-    // },
-    // async session({ session }) {
-    //   await dbConnect();
-    //   const dbUser = await User.findOne({ email: session.user.email });
-    //   session.user.id = dbUser._id;
-    //   return session;
-    // },
+        if (!dbUser) {
+          dbUser = await User.create({
+            name: user.name,
+            email: user.email,
+            provider: account?.provider,
+            role: "user", // default
+            profileimage: user.image,
+          });
+        }
 
-    async jwt({ token, user }) {
-      if (user) token.id = user.id
-      return token
+        // add 2 extra feilds to set jwt and session
+        // because sigin just return name,email,profileimage
+        // but i need to role and provider name
+        user.role = dbUser.role;
+        user.provider = dbUser.provider;
+      }
+
+      return true;
+    },
+
+    async jwt({ token, user, account }) {
+      console.log("JWT callback", { token, user });
+      if (user) {
+        token.name = user.name;
+        token.email = user.email;
+        token.role = user.role;
+        token.provider = user.provider || account?.provider;
+      }
+      return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id
-      return session
+      console.log("SESSION callback", { session, token });
+      if (token) {
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.role = token.role;
+        session.user.provider = token.provider;
+      }
+      return session;
     },
   },
 
@@ -83,18 +91,4 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
-  // cookies: {
-  //   sessionToken: {
-  //     name: `__Secure-next-auth.session-token`,
-  //     options: {
-  //       httpOnly: true,
-  //       sameSite: "lax",
-  //       path: "/",
-  //       secure: process.env.NODE_ENV === "production",
-  //     },
-  //   },
-  // },
-
-
-
 };

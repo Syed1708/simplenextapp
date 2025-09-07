@@ -35,7 +35,7 @@ export default function Sidebar() {
           {/* Navigation */}
           <nav className="flex flex-col gap-4">
             <Link
-              href="/dashboard"
+              href="/dashboard/admin"
               className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
               onClick={() => setOpen(false)}
             >
@@ -44,7 +44,7 @@ export default function Sidebar() {
             </Link>
 
             <Link
-              href="/dashboard/products"
+              href="/dashboard/admin/products"
               className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
               onClick={() => setOpen(false)}
             >
